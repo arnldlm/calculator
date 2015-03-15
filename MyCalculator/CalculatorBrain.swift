@@ -19,14 +19,14 @@ class CalculatorBrain {
         var description: String { // converting enum values to string
             get {
                 switch self {
-                case .Operand(let operand):
-                    return "\(operand)"
-                case .unaryOperation(let symbol, _):
-                    return symbol
-                case .binaryOperation(let symbol, _):
-                    return symbol
-                case .Variable(let symbol):
-                    return "\(symbol)"
+                    case .Operand(let operand):
+                        return "\(operand)"
+                    case .unaryOperation(let symbol, _):
+                        return symbol
+                    case .binaryOperation(let symbol, _):
+                        return symbol
+                    case .Variable(let symbol):
+                        return "\(symbol)"
                 }
             }
         }
@@ -71,7 +71,6 @@ class CalculatorBrain {
                     }
                 case .Variable(let symbol):
                     if let variableValue = variableValues["\(symbol)"] {
-                        println("\(variableValue)")
                         return (variableValue, remainingOps)
                     }
             }
@@ -82,7 +81,18 @@ class CalculatorBrain {
     
     func evaluate() -> Double? {
         let (result, remainder) = evaluate(opStack)
-        println("\(opStack) = \(result) with \(remainder) left over")
+        //println("\(opStack.last)")
+        
+        var aString: String = "opStack.last = nil"
+        
+        if opStack.last != nil {
+            aString = "\(opStack.last!)"
+        }
+        
+        let number = 2
+        opStack.removeLast()
+//      println("\(opStack) = \(result) with \(remainder) left over")
+        printDescriptionUnary(aString, operand: opStack.last?.description)
         return result
     }
     
@@ -95,12 +105,21 @@ class CalculatorBrain {
         if let operation = knownOps[symbol] {
             opStack.append(operation)
         }
+        
         return evaluate()
     }
     
     func pushOperand(symbol: String) -> Double? {
         opStack.append(Op.Variable(symbol))
         return evaluate()
+    }
+    
+    func printDescriptionUnary(oper: String, operand: String?) { // prints description for unary operation
+        println(oper + "(" + "\(operand)" + ")")
+    }
+    
+    func printDescriptionBinary(oper: String, operand1: Double, operand2: Double) { // prints description for binary op
+        
     }
     
 }

@@ -164,6 +164,7 @@
 				TargetAttributes = {
 					3B2C4B9D1AB35BA300AA4EE5 = {
 						CreatedOnToolsVersion = 6.2;
+						DevelopmentTeam = 2S3D8J8M3T;
 					};
 					3B2C4BB21AB35BA300AA4EE5 = {
 						CreatedOnToolsVersion = 6.2;
@@ -342,6 +343,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = MyCalculator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -352,6 +354,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = MyCalculator/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -411,6 +414,7 @@
 				3B2C4BBF1AB35BA300AA4EE5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		3B2C4BC01AB35BA300AA4EE5 /* Build configuration list for PBXNativeTarget "MyCalculatorTests" */ = {
 			isa = XCConfigurationList;
@@ -419,6 +423,7 @@
 				3B2C4BC21AB35BA300AA4EE5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
