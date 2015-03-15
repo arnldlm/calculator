@@ -12,13 +12,12 @@ class ViewController: UIViewController {
     
     var userIsTyping = false
     var decimalTyped = false
-    var piTyped = false
     
     var brain = CalculatorBrain()
     
     @IBOutlet weak var stack: UILabel!
-    
     @IBOutlet weak var display: UILabel!
+    @IBOutlet weak var buttonSetM: UIButton!
     
     @IBAction func numInput(sender: UIButton) {
         let digit = sender.currentTitle
@@ -52,47 +51,79 @@ class ViewController: UIViewController {
         if userIsTyping {
             enter()
         }
-        
-        if let operation = sender.currentTitle! {
+        if brain.opStack.count >= 2 {
+            sendOperateToBrain(sender.currentTitle!)
+        }
+        printOntoStack()
+    }
+    
+    @IBAction func unaryOperate(sender: UIButton) {
+        if userIsTyping {
+            enter()
+        }
+        if brain.opStack.count >= 1 {
+            sendOperateToBrain(sender.currentTitle!)
+        }
+        printOntoStack()
+    }
+    
+    
+    func sendOperateToBrain(op: String?) {
+        if let operation = op {
             if let result = brain.performOperation(operation) {
                 displayValue = result
             }
-            else {
-                displayValue = 0
-            }
+        else {
+            displayValue = 0
+        }
         }
     }
     
     @IBAction func enter() {
-        userIsTyping = false
-        if let result = brain.pushOperand(displayValue) {
-            displayValue = result
-        } else {
-            displayValue = 0
+        let text = display.text!
+        if text != "M" {
+            userIsTyping = false
+            if let result = brain.pushOperand(displayValue) {
+                displayValue = result
+            } else {
+                displayValue = 0
+            }
+            printOntoStack()
         }
-        stack.text = "\(brain.opStack)"
     }
 
     @IBAction func clear() {
         display.text = "0"
         userIsTyping = false
         decimalTyped = false
-        piTyped = false
         
         brain = CalculatorBrain()
+        
+        stack.text = nil
+        buttonSetM.enabled = true
+    }
+    
+    @IBAction func setVariable() {
+        if brain.variableValues.isEmpty {
+            brain.pushOperand("M")
+            let variableValue = displayValue
+            brain.variableValues["M"] = variableValue
+            display.text = "M = \(variableValue)"
+            userIsTyping = false
+            
+            buttonSetM.titleLabel!.textColor = UIColor.yellowColor()
+            buttonSetM.enabled = false
+        }
+        printOntoStack()
     }
     
     @IBAction func variable_x() {
-        if brain.variableValues.isEmpty {
-            brain.pushOperand("x")
-            let variableValue = displayValue
-            brain.variableValues["x"] = variableValue
-            
-            display.text = "x = \(variableValue)"
-            userIsTyping = false
+        if !brain.variableValues.isEmpty {
+            displayValue = brain.variableValues["M"]!
         }
         else {
-            displayValue = brain.variableValues["x"]!
+            display.text = "M"
+            userIsTyping = false
         }
     }
     
@@ -106,6 +137,9 @@ class ViewController: UIViewController {
         }
     }
     
+    func printOntoStack() {
+        stack.text = "\(brain.opStack)"
+    }
     
 }
 
