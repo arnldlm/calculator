@@ -9,7 +9,7 @@
 import Foundation
 
 class CalculatorBrain {
-    private enum Op: Printable
+    enum Op: Printable
     {
         case Operand(Double) // stores the operand (number)
         case unaryOperation(String, Double -> Double) // stores an operation and the function executing that operation
@@ -32,8 +32,8 @@ class CalculatorBrain {
         }
     }
     
-    private var opStack = [Op]()
-    private var knownOps = [String:Op]()
+    var opStack = [Op]()
+    var knownOps = [String:Op]()
     
     var variableValues = [String:Double]() // stores variable name and variable value
     

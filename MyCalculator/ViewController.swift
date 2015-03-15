@@ -16,6 +16,8 @@ class ViewController: UIViewController {
     
     var brain = CalculatorBrain()
     
+    @IBOutlet weak var stack: UILabel!
+    
     @IBOutlet weak var display: UILabel!
     
     @IBAction func numInput(sender: UIButton) {
@@ -68,6 +70,7 @@ class ViewController: UIViewController {
         } else {
             displayValue = 0
         }
+        stack.text = "\(brain.opStack)"
     }
 
     @IBAction func clear() {
