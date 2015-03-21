@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class CalculatorViewController: UIViewController {
     
     var userIsTyping = false
     var decimalTyped = false
@@ -47,7 +47,7 @@ class ViewController: UIViewController {
         }
     }
     
-    @IBAction func operate(sender: AnyObject) {
+    @IBAction func binaryOperate(sender: UIButton) {
         if userIsTyping {
             enter()
         }
@@ -66,7 +66,6 @@ class ViewController: UIViewController {
         }
         printOntoStack()
     }
-    
     
     func sendOperateToBrain(op: String?) {
         if let operation = op {
@@ -92,6 +91,14 @@ class ViewController: UIViewController {
         }
     }
 
+    @IBAction func backspaceButton() {
+        display.text = dropLast(display.text!)
+        if display.text!.isEmpty {
+            display.text = "0"
+            userIsTyping = false
+        }
+    }
+    
     @IBAction func clear() {
         display.text = "0"
         userIsTyping = false

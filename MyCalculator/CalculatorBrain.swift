@@ -35,6 +35,8 @@ class CalculatorBrain {
     var opStack = [Op]()
     var knownOps = [String:Op]()
     
+    var stringOnStack: String?
+    
     var variableValues = [String:Double]() // stores variable name and variable value
     
     init() {
@@ -48,10 +50,35 @@ class CalculatorBrain {
         knownOps["tan"] = Op.unaryOperation("tan") {tan($0)}
     }
     
+    typealias PropertyList = AnyObject
+    
+    var program: PropertyList { // Can be used when program is to be reset during multitasking, app quit, etc
+        get { // returns new array where each member of opStack is converted into a string
+            return opStack.map { $0.description }
+        }
+        set { // sets the opStack to the opStack represented as an array of strings
+            if let opSymbols = newValue as? Array<String> {
+                var newOpStack = [Op]()
+                for opSymbol in opSymbols {
+                    if let op = knownOps[opSymbol] {
+                        newOpStack.append(op)
+                    } else if let operand = NSNumberFormatter().numberFromString(opSymbol)?.doubleValue {
+                        newOpStack.append(.Operand(operand))
+                    }
+                }
+                opStack = newOpStack
+            }
+        }
+    }
+    
     //parameters: an array of type Op
     private func evaluate(ops: [Op]) -> (result: Double?, remainingOps: [Op]) {
         if !ops.isEmpty {
             var remainingOps = ops
+            stringOnStack = printDescription(ops)
+            if stringOnStack != nil {
+                println(stringOnStack!)
+            }
             let op = remainingOps.removeLast() // pops stack and sets to var op
             switch op {
                 case .Operand(let operand):
@@ -74,9 +101,28 @@ class CalculatorBrain {
                         return (variableValue, remainingOps)
                     }
             }
-            
         }
         return (nil, ops)
+    }
+    
+    private func printDescription(ops: [Op]) -> String? {
+        if !ops.isEmpty {
+            var remainingOps = ops
+            let operand = remainingOps.removeLast()
+            if !remainingOps.isEmpty {
+                let op = remainingOps.removeLast()
+                switch operand.description {
+                case "sin":
+                    return("sin(" + op.description + ")")
+                case "cos":
+                    return("cos(" + op.description + ")")
+                case "tan":
+                    return("tan(" + op.description + ")")
+                default: break
+                }
+            }
+        }
+        return nil
     }
     
     func evaluate() -> Double? {
