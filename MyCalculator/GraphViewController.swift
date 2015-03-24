@@ -8,26 +8,14 @@
 
 import UIKit
 
-class GraphViewController: UIViewController, GraphViewDataSource
+class GraphViewController: UIViewController
 {
     @IBOutlet weak var graphView: GraphView! {
         didSet {
-            graphView.dataSource = self
+            graphView.addGestureRecognizer(UIPinchGestureRecognizer(target: graphView, action: "scale:"))
         }
     }
-    
-    var scale: Int = 50 {
-        didSet {
-            println("Scale = \(scale)")
-            updateUI()
-        }
-    }
-    
-    func updateUI() {
-        graphView.setNeedsDisplay()
-    }
-    
-    func pointsPerUnitForGraphView(sender: GraphView) -> Int? {
-        return Int(scale)
+    override func viewDidLoad() {
+        super.viewDidLoad()
     }
 }

@@ -76,9 +76,9 @@ class CalculatorBrain {
         if !ops.isEmpty {
             var remainingOps = ops
             stringOnStack = printDescription(ops)
-            if stringOnStack != nil {
-                println(stringOnStack!)
-            }
+//            if stringOnStack != nil {
+//                println(stringOnStack!)
+//            }
             let op = remainingOps.removeLast() // pops stack and sets to var op
             switch op {
                 case .Operand(let operand):

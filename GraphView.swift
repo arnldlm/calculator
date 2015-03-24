@@ -8,20 +8,35 @@
 
 import UIKit
 
-protocol GraphViewDataSource: class {
-    func pointsPerUnitForGraphView(sender: GraphView) -> Int?
+protocol delegate: class {
+    func equationForGraphView(sender: GraphView) -> String?
 }
 
 @IBDesignable
-
 class GraphView: UIView {
 
-    weak var dataSource: GraphViewDataSource? // Of type protocol
+    @IBInspectable
+    var graphScale: CGFloat = 10 {
+        didSet {
+            setNeedsDisplay()
+        }
+    }
+    
+    weak var dataSource: delegate?
     
     var drawer = AxesDrawer()
 
     override func drawRect(rect: CGRect) {
-        let scale = dataSource?.pointsPerUnitForGraphView(self) ?? 0
-        drawer.drawAxesInRect(bounds, origin: center, pointsPerUnit: CGFloat(scale))
+        drawer.drawAxesInRect(bounds, origin: center, pointsPerUnit: graphScale)
+        
+        let equation = dataSource?.equationForGraphView(self) ?? "Failed to obtain equation"
+        println(equation)
+    }
+    
+    func scale (gesture: UIPinchGestureRecognizer) { // Pinch gesture
+        if gesture.state == .Changed {
+            graphScale *= gesture.scale
+            gesture.scale = 1 // resets back to 1 continuously update scale
+        }
     }
 }
